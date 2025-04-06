@@ -1,0 +1,9 @@
+sftp.json
+.DS_Store
+/.vscode
+/.idea
+/.git
+*.json
+/node_modules
+/.vscode
+/app/node_modules
