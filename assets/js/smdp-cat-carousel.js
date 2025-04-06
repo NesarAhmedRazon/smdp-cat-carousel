@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const lazyBgElements = document.querySelectorAll(".lazy-bg");
+
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {

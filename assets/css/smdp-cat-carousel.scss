@@ -23,6 +23,7 @@
         }
 
         &-item {
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -42,6 +43,10 @@
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
             white-space: normal;
 
+            @media (min-width: 768px) {
+                min-width: 7rem;
+            }
+
             &:hover {
                 background: #f0f0f0;
             }
@@ -58,6 +63,7 @@
             &-icon {
                 width: 3.2em;
                 height: 3.2em;
+                margin-top: 2px;
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: center;
@@ -65,7 +71,7 @@
             }
 
             &-count {
-                font-size: 0.8em;
+                font-size: 0.6em;
                 color: #666;
                 position: absolute;
                 top: 0.5em;

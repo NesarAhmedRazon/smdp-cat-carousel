@@ -97,6 +97,18 @@ public static function get_product_category($id) {
 		);
 
         $this->add_control(
+            'smdp_section_title',
+            [
+                'label' => esc_html__( 'Section Title', 'smdp-cat-carousel' ),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => esc_html__( 'Categories', 'smdp-cat-carousel' ),
+                'label_block' => true,
+                'placeholder' => esc_html__( 'Enter your title', 'smdp-cat-carousel' ),
+                'separator' => 'after',
+                
+            ]
+        );
+        $this->add_control(
 			'categories',
             [
                 'label' => esc_html__( 'Categories', 'smdp-cat-carousel' ),
@@ -134,7 +146,8 @@ public static function get_product_category($id) {
                 'selector' => 'cat_carousel_cat',
             ]
 		);
-        $this->add_control(
+        
+        $this->add_responsive_control(
 			'smdp_show_icon',
 			[
 				'label' => esc_html__( 'Show Icon', 'smdp-cat-carousel' ),
@@ -148,6 +161,10 @@ public static function get_product_category($id) {
 		);
 
 		$this->end_controls_section();
+        
+        
+        
+
         $this->start_controls_section(
 			'counter_section',
 			[
@@ -162,11 +179,9 @@ public static function get_product_category($id) {
 				'type' => \Elementor\Controls_Manager::SWITCHER,
 				'label_on' => esc_html__( 'Show', 'smdp-cat-carousel' ),
 				'label_off' => esc_html__( 'Hide', 'smdp-cat-carousel' ),
-				'return_value' => 'block',
-				'default' => 'block',
-                'selectors' => [
-                        '{{WRAPPER}} .smdp-category-scroll-item-icon' => 'display: {{VALUE}};',
-                    ],
+				'return_value' => 'yes',
+				'default' => 'yes',
+                
 			]
 		);
         $this->end_controls_section();
@@ -244,26 +259,36 @@ public static function get_product_category($id) {
 	 */
 	protected function render(): void {
 		$settings = $this->get_settings_for_display();
+        $rawSettings = $this->get_settings();
 
         $cats = $settings['categories'];
         if ( empty( $cats ) ) {
             return;
         }
-        $counter = $settings['show_counter'] === 'yes' ? true : false;
-        $icon = $settings['smdp_show_icon'] === 'yes' ? true : false;
+        $showCounter = $settings['show_counter'] === 'yes' ? true : false;
+        $showIcon = $settings['smdp_show_icon'] === 'yes' ? true : false;
+        $deviceType = getDeviceType();
+        $postFix = $deviceType == 'desktop' ? 'smdp_show_icon' : 'smdp_show_icon_'.$deviceType;
+        $showIcon = $settings[$postFix] === 'yes' ? true : false;        
+        
+        
+        if ( current_user_can( 'manage_options' ) ) {
+            
         // Get the current breakpoint (desktop, tablet, mobile)
         
-       
+        var_dump($deviceType);
+        var_dump($postFix);
+        }
        
 
 		?>
-		<section class="smdp-category-scroll">          
+		<section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" >   
+            <div class="woodmart-title-container title wd-fontsize-m">জনপ্রিয় প্রোডাক্ট ক্যাটাগরি সমূহঃ</div> 
             <div class="smdp-category-scroll-container">
 			<!-- // render the carousel here -->            
                 <?php foreach ( $settings['categories'] as $category ) : 
                     $data = self::get_product_category( $category['cat_carousel_cat'] );
-                    $iconD = $category['cat_carousel_icon_desktop']['url'];
-                    $showIcon = $settings['smdp_show_icon'] === 'yes' ? true : false;
+                    $iconD = $category['cat_carousel_icon_desktop']['url'];                    
                     $icon = $iconD ? $iconD : $data['icon'];
                     if ( empty( $data ) ) {
                         continue;
@@ -277,7 +302,7 @@ public static function get_product_category($id) {
                             </span>
                         <?php endif; ?>
                         <span><?php echo esc_html( $title ); 
-                        if($counter){
+                        if($showCounter){
                             $count = $data['count'] ?? 0;
                             if ( $count > 0 ) {
                             ?>
@@ -303,15 +328,18 @@ public static function get_product_category($id) {
                 <?php endforeach; ?> 
                 </div>                              
 		</section>
+        <?php 
+            if($deviceType =='tablet' || $deviceType =='desktop'):
+        ?>
         <script>
-            jQuery(document).ready(function($) {
-                $('.smdp-category-scroll-container').on('wheel', function(e) {
-                    e.preventDefault();
-                    this.scrollTop += e.originalEvent.deltaY;
-                });
+            jQuery(document).ready(function ($) {
+            $(".smdp-category-scroll-container").on("wheel", function (e) {
+                e.preventDefault();
+                this.scrollLeft += e.originalEvent.deltaY;
+            });
             });
         </script>
-
+    <?php endif;?>
 
 
 <style>

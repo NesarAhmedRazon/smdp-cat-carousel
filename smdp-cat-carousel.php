@@ -57,6 +57,8 @@ add_action( 'elementor/controls/register', 'register_carCar_control' );
 function register_carCar_Widget( $widgets_manager ) {
 
 	require_once( __DIR__ . '/widgets/carCar-widget.php' );
+    
+    require_once( __DIR__ . '/inc/device-check.php' );
 
 	$widgets_manager->register( new \SmdP_carCar_Widget() );
 
