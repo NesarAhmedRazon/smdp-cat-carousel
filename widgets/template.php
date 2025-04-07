@@ -40,12 +40,14 @@ function smdp_cat_car_template($data,$id='smdp_catCar',$rawData=[]) {
         $deviceType = getDeviceType();
         $postFix = $deviceType == 'desktop' ? 'smdp_show_icon' : 'smdp_show_icon_'.$deviceType;
         $showIcon = $data[$postFix] === 'yes' ? true : false;        
-        
+        $headingVisible = $data[$id.'_heading_visibility'] === 'yes' ? true : false;
         $sec_title = $data[$id.'_heading_text'] !== '' ? $data[$id.'_heading_text'] : esc_html__( 'Categories', 'smdp-cat-carousel' );
 
     ?>
-    <section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" >   
+    <section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" > 
+        <?php if($headingVisible):?>  
             <div class="smdp-category-scroll-title"><?= esc_html($sec_title); ?></div> 
+        <?php endif; ?>
             <div class="smdp-category-scroll-container">
 			<!-- // render the carousel here -->            
                 <?php foreach ( $categories as $category ) : 

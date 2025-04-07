@@ -1,17 +1,12 @@
-<?php
+<?php 
 
-/**
- * Heading Controls for the Elementor widget.
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+if(!defined('ABSPATH')){
+    exit; // Exit if accessed directly
 }
 
-
-
-function heading($obj,$label='Section Label',$secId='section_id',$selector='.smdp-category-scroll-title',$domain='smdp-cat-carousel') {
-    $obj->start_controls_section(
+class Heading {
+    public static function heading($obj,$label='Section Label',$secId='section_id',$selector='.smdp-category-scroll-title',$domain='smdp-cat-carousel'){
+$obj->start_controls_section(
             $secId.'_content',
             [
                 'label' => esc_html__( $label, $domain ),
@@ -32,7 +27,7 @@ function heading($obj,$label='Section Label',$secId='section_id',$selector='.smd
         $obj->add_control(
             $secId.'_text',
             [
-                'label' => esc_html__( 'Section Heading', $domain ),
+                'label' => esc_html__( $label.' text', $domain ),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'default' => esc_html__( 'জনপ্রিয় প্রোডাক্ট ক্যাটাগরি সমূহঃ', $domain ),
                 'label_block' => true,
@@ -120,4 +115,6 @@ function heading($obj,$label='Section Label',$secId='section_id',$selector='.smd
 		);
 
         $obj->end_controls_section();
+    }
+
 }

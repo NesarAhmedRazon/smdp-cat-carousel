@@ -3,7 +3,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-require_once( __DIR__ . '/items-heading.php' );
+
+require_once( __DIR__ . '/controls/index.php' );
 
 class SmdP_carCar_Widget extends \Elementor\Widget_Base {
 	 
@@ -89,8 +90,8 @@ public static function get_product_category($id) {
 	 */
 	protected function register_controls(): void {
         $id = 'smdp_catCar';
-        
-        heading($this,'Heading',$id.'_heading','.smdp-category-scroll-title');
+        Controls::heading($this,'Heading',$id.'_heading','.smdp-category-scroll-title');
+        //heading($this,'Heading',$id.'_heading','.smdp-category-scroll-title');
         
 
 		$this->start_controls_section(// Start Section Content Controls
