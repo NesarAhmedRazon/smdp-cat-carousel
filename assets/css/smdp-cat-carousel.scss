@@ -1,88 +1,101 @@
-.smdp-category {
-    &-scroll {
-        padding: 0.25rem;
+$wrap: 'smdp-category-scroll';
 
-        &-container {
-            display: grid;
-            flex-wrap: wrap;
-            overflow-y: auto;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            padding: 10px 0;
+.#{$wrap} {
+    padding: 0.25rem;
+    $container: '-container';
 
-            @media (min-width: 576px) {
-                grid-template-columns: repeat(4, 1fr);
-            }
+    &#{$container} {
+        display: grid;
+        flex-wrap: wrap;
+        overflow-y: auto;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+        padding: 10px 0;
 
-            @media (min-width: 768px) {
-                display: flex;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                overflow-y: hidden;
-            }
+        @media (min-width: 576px) {
+            grid-template-columns: repeat(4, 1fr);
         }
 
-        &-item {
-
+        @media (min-width: 768px) {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-flow: column;
-            text-align: center;
-            overflow: hidden;
-            background: #f0f0f033;
-            padding: 0.5rem;
-            border-radius: 3px;
-            text-decoration: none;
-            transition: background 0.3s ease;
-            gap: 0.25rem;
-            flex-wrap: wrap;
-            font-size: 0.9em;
-            position: relative;
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            white-space: normal;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+    }
 
-            @media (min-width: 768px) {
-                min-width: 7rem;
-            }
+    $item: '-item';
 
-            &:hover {
-                background: #f0f0f0;
-            }
+    &#{$item} {
 
-            &:active {
-                background: #e0e0e0;
-            }
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-flow: column;
+        text-align: center;
+        overflow: hidden;
+        background: #f0f0f033;
+        padding: 0.5rem;
+        border-radius: 3px;
+        text-decoration: none;
+        transition: background 0.3s ease;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+        font-size: 0.9em;
+        position: relative;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        white-space: normal;
 
-            &:focus {
-                outline: none;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            }
 
-            &-icon {
-                width: 3.2em;
-                height: 3.2em;
-                margin-top: 2px;
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
-                display: inline-block;
-            }
 
-            &-count {
-                font-size: 0.6em;
-                color: #666;
+
+        @media (min-width: 768px) {
+            min-width: 7rem;
+        }
+
+        &:hover {
+            background: #f0f0f0;
+        }
+
+        &:active {
+            background: #e0e0e0;
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        &-icon {
+            width: 3.2em;
+            height: 3.2em;
+            margin-top: 2px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: inline-block;
+        }
+
+
+        &.with-icon {
+            & .#{$wrap}#{$item}-count {
                 position: absolute;
                 top: 0.5em;
                 right: 0.5em;
-                font-weight: 600;
-                line-height: 1;
-                text-align: center;
+                font-size: 0.6em;
             }
+        }
+
+        &-count {
+            color: #666;
+            font-weight: 600;
+            line-height: 1;
+            text-align: center;
         }
     }
 }
+
 
 .clamp-1 {
     display: -webkit-box;

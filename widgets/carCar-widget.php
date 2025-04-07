@@ -184,6 +184,26 @@ public static function get_product_category($id) {
                 
 			]
 		);
+        $this->add_control(
+			'smdp_counter_lng',
+            // convert to bangla number
+			[
+				'label' => esc_html__( 'Choose Language', 'smdp-cat-carousel' ),
+				'type' => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'en' => [
+						'title' => esc_html__( 'English', 'textdomain' ),
+						'icon' => 'eicon-upgrade-crown',
+					],
+					'bn' => [
+						'title' => esc_html__( 'Bangla', 'textdomain' ),
+						'icon' => 'eicon-notification',
+					],
+                ],
+                'toggle' => true,
+                'default' => 'en',
+			]
+		);
         $this->end_controls_section();
         $this->start_controls_section(
             'style_section',
@@ -266,24 +286,20 @@ public static function get_product_category($id) {
             return;
         }
         $showCounter = $settings['show_counter'] === 'yes' ? true : false;
+        $ln = $settings['smdp_counter_lng'];
         $showIcon = $settings['smdp_show_icon'] === 'yes' ? true : false;
         $deviceType = getDeviceType();
         $postFix = $deviceType == 'desktop' ? 'smdp_show_icon' : 'smdp_show_icon_'.$deviceType;
         $showIcon = $settings[$postFix] === 'yes' ? true : false;        
         
+        $sec_title = $settings['smdp_section_title'] !== '' ? $settings['smdp_section_title'] : esc_html__( 'Categories', 'smdp-cat-carousel' );
         
-        if ( current_user_can( 'manage_options' ) ) {
-            
-        // Get the current breakpoint (desktop, tablet, mobile)
-        
-        var_dump($deviceType);
-        var_dump($postFix);
-        }
+        //dumper($settings);
        
 
 		?>
 		<section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" >   
-            <div class="woodmart-title-container title wd-fontsize-m">জনপ্রিয় প্রোডাক্ট ক্যাটাগরি সমূহঃ</div> 
+            <div class="woodmart-title-container title wd-fontsize-m"><?= esc_html($sec_title); ?></div> 
             <div class="smdp-category-scroll-container">
 			<!-- // render the carousel here -->            
                 <?php foreach ( $settings['categories'] as $category ) : 
@@ -296,7 +312,7 @@ public static function get_product_category($id) {
                     $title = $category['cat_carousel_title'] !== '' ? $category['cat_carousel_title'] : $data['name'];
                     // var_dump($data['metas']);
                     ?>
-                    <a title="Explore <?= esc_html($data['name']); ?> category"  class="smdp-category-scroll-item" href="<?php echo esc_url( $data['link'] ); ?>" title= rel="noopener noreferrer">
+                    <a title="Explore <?= esc_html($data['name']); ?> category"  class="smdp-category-scroll-item<?= $showIcon==true ? ' with-icon':'' ;?>" href="<?php echo esc_url( $data['link'] ); ?>" title= rel="noopener noreferrer">
                         <?php if($showIcon):?>
                         <span class="smdp-category-scroll-item-icon lazy-bg"  data-bg="<?= esc_url($icon); ?>" role="img" aria-label="<?= esc_attr($data['alt'] ?? 'Category Icon'); ?>">
                             </span>
@@ -307,15 +323,15 @@ public static function get_product_category($id) {
                             if ( $count > 0 ) {
                             ?>
                             <span class="smdp-category-scroll-item-count clamp-1">
-                                (<?php
+                                <?php
                                     
-                                    if ( $count > 10 ) {
-                                        $count = $count - 5;
-                                        echo esc_html__(  $count.'+', 'smdp-cat-carousel' );
-                                    }else{
-                                        echo esc_html( $count );
+                                    if ( $count > 25 ) {
+                                        $count = $count - 5;                                        
+                                        echo esc_html__( ($ln== 'bn'?enTobnNumber($count): $count).'+', 'smdp-cat-carousel' );
+                                    }else{                                        
+                                        echo esc_html( $ln== 'bn'?enTobnNumber($count): $count , 'smdp-cat-carousel' );
                                     } 
-                                ?>)
+                                ?>
                             </span>
                             <?php
                             }
