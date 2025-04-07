@@ -3,6 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+require_once( __DIR__ . '/items-heading.php' );
 
 class SmdP_carCar_Widget extends \Elementor\Widget_Base {
 	 
@@ -87,8 +88,12 @@ public static function get_product_category($id) {
 	 * @access protected
 	 */
 	protected function register_controls(): void {
+        $id = 'smdp_catCar';
+        
+        heading($this,'Heading',$id.'_heading','.smdp-category-scroll-title');
+        
 
-		$this->start_controls_section(
+		$this->start_controls_section(// Start Section Content Controls
 			'content_section',
 			[
 				'label' => esc_html__( 'Content', 'smdp-cat-carousel' ),
@@ -96,19 +101,8 @@ public static function get_product_category($id) {
 			]
 		);
 
-        $this->add_control(
-            'smdp_section_title',
-            [
-                'label' => esc_html__( 'Section Title', 'smdp-cat-carousel' ),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => esc_html__( 'Categories', 'smdp-cat-carousel' ),
-                'label_block' => true,
-                'placeholder' => esc_html__( 'Enter your title', 'smdp-cat-carousel' ),
-                'separator' => 'after',
-                
-            ]
-        );
-        $this->add_control(
+        
+        $this->add_control( // Repeater
 			'categories',
             [
                 'label' => esc_html__( 'Categories', 'smdp-cat-carousel' ),
@@ -192,11 +186,11 @@ public static function get_product_category($id) {
 				'type' => \Elementor\Controls_Manager::CHOOSE,
 				'options' => [
 					'en' => [
-						'title' => esc_html__( 'English', 'textdomain' ),
+						'title' => esc_html__( 'English', 'smdp-cat-carousel' ),
 						'icon' => 'eicon-upgrade-crown',
 					],
 					'bn' => [
-						'title' => esc_html__( 'Bangla', 'textdomain' ),
+						'title' => esc_html__( 'Bangla', 'smdp-cat-carousel' ),
 						'icon' => 'eicon-notification',
 					],
                 ],
@@ -205,6 +199,8 @@ public static function get_product_category($id) {
 			]
 		);
         $this->end_controls_section();
+        
+        
         $this->start_controls_section(
             'style_section',
             [
@@ -212,7 +208,82 @@ public static function get_product_category($id) {
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
-
+        $this->add_responsive_control(
+            'smdp_carousel_align',
+                    
+            [
+                'label' => esc_html__( 'Item Align', 'smdp-cat-carousel' ),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'flex-start' => [
+                        'title' => esc_html__( 'Left', 'smdp-cat-carousel' ),
+                        'icon' => 'eicon-align-start-h',
+                    ],
+                    'center' => [
+                        'title' => esc_html__( 'Center', 'smdp-cat-carousel' ),
+                        'icon' => 'eicon-justify-center-h',
+                    ],
+                    'flex-end' => [
+                        'title' => esc_html__( 'Right', 'smdp-cat-carousel' ),
+                        'icon' => 'eicon-align-end-h',
+                    ],
+                    'space-between' => [
+                        'title' => esc_html__( 'Space Between', 'smdp-cat-carousel' ),
+                        'icon' => 'eicon-justify-space-between-h',
+                    ],
+                    'space-around' => [
+                        'title' => esc_html__( 'Space Around', 'smdp-cat-carousel' ),
+                        'icon' => 'eicon-justify-space-around-h',
+                    ],
+                    'space-evenly' => [
+                        'title' => esc_html__( 'Space Evenly', 'smdp-cat-carousel' ),
+                        'icon' => 'eicon-justify-space-evenly-h',
+                    ],
+                ],
+                'devices' => [ 'desktop', 'tablet' ],
+                'default' => 'center',
+                'label_block' => true,
+                'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .smdp-category-scroll-container' => 'justify-content: {{VALUE}};',
+                ],
+			]
+		);
+        $this->add_responsive_control(
+            'smdp_carousel_gap',
+            [
+                'label' => esc_html__( 'Mobile Item Gap', 'smdp-cat-carousel' ),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => [ 'rem','px', '%', 'em' ],
+                'devices' => [ 'mobile' ],
+                
+                'mobile_default' => [
+					'size' => 0.5,
+                    'unit' => 'rem',
+				],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 100,
+                        'step' => 1,
+                    ],
+                    '%' => [
+                        'min' => 0,
+                        'max' => 100,
+                        'step' => 1,
+                    ],
+                    'em' => [
+                        'min' => 0,
+                        'max' => 10,
+                        'step' => 0.1,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .smdp-category-scroll-item' => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+            
+        );
         $this->add_control(
             'carousel_style',
             [
@@ -226,20 +297,9 @@ public static function get_product_category($id) {
             ]
         );
         $this->add_control(
-            'carousel_speed',
-            [
-                'label' => esc_html__( 'Carousel Speed', 'smdp-cat-carousel' ),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 500,
-                'min' => 100,
-                'max' => 5000,
-                'step' => 100,
-            ]
-        );
-        $this->add_control(
 			'color',
 			[
-				'label' => esc_html__( 'Color', 'textdomain' ),
+				'label' => esc_html__( 'Color', 'smdp-cat-carousel' ),
 				'type' => \Elementor\Controls_Manager::COLOR,
 				'default' => 'inherit',
 				'selectors' => [
@@ -278,101 +338,12 @@ public static function get_product_category($id) {
 	 * @access protected
 	 */
 	protected function render(): void {
+        $id = 'smdp_catCar';
 		$settings = $this->get_settings_for_display();
         $rawSettings = $this->get_settings();
-
-        $cats = $settings['categories'];
-        if ( empty( $cats ) ) {
-            return;
-        }
-        $showCounter = $settings['show_counter'] === 'yes' ? true : false;
-        $ln = $settings['smdp_counter_lng'];
-        $showIcon = $settings['smdp_show_icon'] === 'yes' ? true : false;
-        $deviceType = getDeviceType();
-        $postFix = $deviceType == 'desktop' ? 'smdp_show_icon' : 'smdp_show_icon_'.$deviceType;
-        $showIcon = $settings[$postFix] === 'yes' ? true : false;        
+        smdp_cat_car_template($settings,$id);
         
-        $sec_title = $settings['smdp_section_title'] !== '' ? $settings['smdp_section_title'] : esc_html__( 'Categories', 'smdp-cat-carousel' );
-        
-        //dumper($settings);
-       
-
-		?>
-		<section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" >   
-            <div class="woodmart-title-container title wd-fontsize-m"><?= esc_html($sec_title); ?></div> 
-            <div class="smdp-category-scroll-container">
-			<!-- // render the carousel here -->            
-                <?php foreach ( $settings['categories'] as $category ) : 
-                    $data = self::get_product_category( $category['cat_carousel_cat'] );
-                    $iconD = $category['cat_carousel_icon_desktop']['url'];                    
-                    $icon = $iconD ? $iconD : $data['icon'];
-                    if ( empty( $data ) ) {
-                        continue;
-                    }
-                    $title = $category['cat_carousel_title'] !== '' ? $category['cat_carousel_title'] : $data['name'];
-                    // var_dump($data['metas']);
-                    ?>
-                    <a title="Explore <?= esc_html($data['name']); ?> category"  class="smdp-category-scroll-item<?= $showIcon==true ? ' with-icon':'' ;?>" href="<?php echo esc_url( $data['link'] ); ?>" title= rel="noopener noreferrer">
-                        <?php if($showIcon):?>
-                        <span class="smdp-category-scroll-item-icon lazy-bg"  data-bg="<?= esc_url($icon); ?>" role="img" aria-label="<?= esc_attr($data['alt'] ?? 'Category Icon'); ?>">
-                            </span>
-                        <?php endif; ?>
-                        <span><?php echo esc_html( $title ); 
-                        if($showCounter){
-                            $count = $data['count'] ?? 0;
-                            if ( $count > 0 ) {
-                            ?>
-                            <span class="smdp-category-scroll-item-count clamp-1">
-                                <?php
-                                    
-                                    if ( $count > 25 ) {
-                                        $count = $count - 5;                                        
-                                        echo esc_html__( ($ln== 'bn'?enTobnNumber($count): $count).'+', 'smdp-cat-carousel' );
-                                    }else{                                        
-                                        echo esc_html( $ln== 'bn'?enTobnNumber($count): $count , 'smdp-cat-carousel' );
-                                    } 
-                                ?>
-                            </span>
-                            <?php
-                            }
-                        }
-                        ?></span>
-                        
-                        
-                    </a>
-                  
-                <?php endforeach; ?> 
-                </div>                              
-		</section>
-        <?php 
-            if($deviceType =='tablet' || $deviceType =='desktop'):
-        ?>
-        <script>
-            jQuery(document).ready(function ($) {
-            $(".smdp-category-scroll-container").on("wheel", function (e) {
-                e.preventDefault();
-                this.scrollLeft += e.originalEvent.deltaY;
-            });
-            });
-        </script>
-    <?php endif;?>
-
-
-<style>
-
-
-
-
-
-
-.scroll-item:hover {
-  background: #ddd;
-}
-
-
-</style>
-       
-		<?php
+    
 	}
 
 }

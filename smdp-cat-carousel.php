@@ -55,7 +55,7 @@ function register_carCar_control( $controls_manager ) {
 add_action( 'elementor/controls/register', 'register_carCar_control' );
 
 function register_carCar_Widget( $widgets_manager ) {
-
+    require_once( __DIR__ . '/widgets/template.php' );
 	require_once( __DIR__ . '/widgets/carCar-widget.php' );
     
     require_once( __DIR__ . '/inc/device-check.php' );
@@ -65,12 +65,15 @@ function register_carCar_Widget( $widgets_manager ) {
 }
 add_action( 'elementor/widgets/register', 'register_carCar_Widget' );
 
-function dumper($data) {
-    if ( current_user_can( 'manage_options' ) ) {        
-        var_dump($data);
+if (!function_exists('dumper')) {
+    function dumper($data) {
+        if ( current_user_can( 'manage_options' ) ) {        
+            var_dump($data);
+        }
     }
 }
-
-function enTobnNumber($number) {
-    return strtr((string)$number, ['0'=>'০', '1'=>'১', '2'=>'২', '3'=>'৩', '4'=>'৪', '5'=>'৫', '6'=>'৬', '7'=>'৭', '8'=>'৮', '9'=>'৯']);
+if (!function_exists('enTobnNumber')) {
+    function enTobnNumber($number) {
+        return strtr((string)$number, ['0'=>'০', '1'=>'১', '2'=>'২', '3'=>'৩', '4'=>'৪', '5'=>'৫', '6'=>'৬', '7'=>'৭', '8'=>'৮', '9'=>'৯']);
+    }
 }
