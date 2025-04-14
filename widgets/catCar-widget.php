@@ -17,7 +17,7 @@ class SmdP_carCar_Widget extends \Elementor\Widget_Base {
 		return [ 'smdp-cat-carousel' ];
 	}
     public function get_script_depends(): array {
-        return [ 'smdp-cat-carousel' ];
+       return [ 'elementor-frontend','smdp-cat-carousel' ];
     }
 	// Get widget title.
 	 
@@ -137,7 +137,7 @@ public static function get_product_category($id) {
                     
                     
                 ],
-                'title_field' => '{{{ cat_carousel_cat}}}',
+                'title_field' => '<# print((cat_carousel_title) ? cat_carousel_title : (cat_carousel_cat ? elementor.modules.controls.Repeater.getControlOptionValue(cat_carousel_cat, "categories", "cat_carousel_cat").options[cat_carousel_cat] : "")) #>',
                 'selector' => 'cat_carousel_cat',
             ]
 		);

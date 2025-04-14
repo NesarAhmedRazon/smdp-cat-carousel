@@ -34,15 +34,21 @@ if (!defined('SMDP_CAT_CAR_PLUGIN_FILE')) {
     define('SMDP_CAT_CAR_PLUGIN_FILE', __FILE__);
 }
 
+// Extra Healpres
+require_once( SMDP_CAT_CAR_PLUGIN_DIR . '/inc/extra.php' );
 
 // 
 function SMDP_CAT_CAR_carousel_dependencies() {
     
     wp_register_style( 'smdp-cat-carousel', SMDP_CAT_CAR_PLUGIN_URL.'assets/css/smdp-cat-carousel.css', [], time() );
-    wp_register_script( 'smdp-cat-carousel', SMDP_CAT_CAR_PLUGIN_URL.'assets/js/smdp-cat-carousel.js', [ 'jquery' ], time(), true );
-}
-add_action('wp_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies');
+    wp_register_script( 'smdp-cat-carousel', SMDP_CAT_CAR_PLUGIN_URL.'assets/js/smdp-cat-carousel.js', [ 'jquery','elementor-frontend'  ], time(), true );
 
+    wp_enqueue_style( 'smdp-cat-carousel');
+    wp_enqueue_script( 'smdp-cat-carousel');
+}
+//add_action('wp_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies');
+add_action('elementor/frontend/after_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies');
+add_action('elementor/editor/after_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies');
 
 
 function register_carCar_control( $controls_manager ) {
@@ -56,7 +62,7 @@ add_action( 'elementor/controls/register', 'register_carCar_control' );
 
 function register_carCar_Widget( $widgets_manager ) {
     require_once( __DIR__ . '/widgets/template.php' );
-	require_once( __DIR__ . '/widgets/carCar-widget.php' );
+	require_once( __DIR__ . '/widgets/catCar-widget.php' );
     
     require_once( __DIR__ . '/inc/device-check.php' );
 
@@ -65,15 +71,3 @@ function register_carCar_Widget( $widgets_manager ) {
 }
 add_action( 'elementor/widgets/register', 'register_carCar_Widget' );
 
-if (!function_exists('dumper')) {
-    function dumper($data) {
-        if ( current_user_can( 'manage_options' ) ) {        
-            var_dump($data);
-        }
-    }
-}
-if (!function_exists('enTobnNumber')) {
-    function enTobnNumber($number) {
-        return strtr((string)$number, ['0'=>'০', '1'=>'১', '2'=>'২', '3'=>'৩', '4'=>'৪', '5'=>'৫', '6'=>'৬', '7'=>'৭', '8'=>'৮', '9'=>'৯']);
-    }
-}
