@@ -1,92 +1,44 @@
-# Sortable Checkbox Elementor Control
+# SMDP Category Carousel for Elementor
 
-![Preview](assets/images/preview/1.JPG)
+![Plugin Preview](/assets/images/preview/1.JPG)
 
-## Description
-
-The **Sortable Checkbox Elementor Control** is a custom control for Elementor widgets that allows users to create a sortable list with checkboxes. This control is designed to manage item order and checkbox states efficiently while maintaining a consistent user experience.
+A versatile Elementor widget that displays WooCommerce product categories in an elegant carousel layout with customizable options.
 
 ## Features
 
-- **Drag-and-Drop Sorting**: Easily reorder items with a simple drag-and-drop interface.
-- **Persistent Data**: Saves updated order and checkbox states dynamically.
-- **Customizable Options**: Each item can have a unique ID, label, and checkbox state.
-- **Elementor Integration**: Seamlessly integrates with Elementor's custom control system.
+- 🛍️ Display WooCommerce product categories in a responsive carousel
+- 🎨 Multiple layout and styling options
+- ⚡ Lazy loading for optimal performance
+- 🌍 Multi-language support (including Bangla number conversion)
+- 🖼️ Custom icons for each category
+- 📱 Fully responsive design
+- 🔄 Repeater field for easy category management
 
 ## Installation
 
-1. Clone or download this repository.
-2. Place the files in your plugin directory. Use a folder structure like this:
-   ```
-   /my-custom-elementor-plugin/
-       /assets/
-           /js/
-               sortable-select.js
-           /css/
-               sortable-select.css
-           /images/
-               preview/
-                   1.jpg
-       control-sortable-checkbox.php
-   ```
-3. Include the `control-sortable-checkbox.php` file in your Elementor extension/plugin.
-
-```php
-require_once plugin_dir_path(__FILE__) . 'control-sortable-checkbox.php';
-```
-
-4. Register the control in your Elementor plugin setup.
-
-```php
-add_action('elementor/controls/controls_registered', function ($controls_manager) {
-    $controls_manager->register_control('sortable_checkbox', new Control_Sortable_Checkbox());
-});
-```
+1. Upload the plugin files to the `/wp-content/plugins/smdp-category-carousel` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Add the widget to your Elementor pages via the widget panel
 
 ## Usage
 
-To use this control in your Elementor widget, specify the control type as `sortable_checkbox`:
+1. **Add Widget**: In Elementor editor, search for "CAT Carousel" and add it to your page
+2. **Configure Categories**:
+   - Add categories via the repeater control
+   - Set custom titles or use default category names
+   - Upload custom icons for each category
+3. **Styling Options**:
+   - Control item alignment and spacing
+   - Customize colors and shadows
+   - Toggle category counters
+4. **Language Support**:
+   - Switch between English and Bangla number formats
 
-```php
-$this->add_control(
-    'sortable_list',
-    [
-        'label' => __('Sortable List', 'plugin-name'),
-        'type' => 'sortable_checkbox',
-        'description' => __('Drag and reorder items, and toggle their checkbox state.', 'plugin-name'),
-        'default' => [
-            ['id' => 1, 'checked' => true, 'index' => 1],
-            ['id' => 2, 'checked' => false, 'index' => 2],
-        ],
-    ]
-);
-```
+### Essential Requirements
 
-## File Structure
-
-The plugin's file structure should look like this:
-
-```
-/assets/
-    /js/
-        sortable-select.js
-    /css/
-        sortable-select.css
-    /images/
-        preview/
-            1.jpg
-control-sortable-checkbox.php
-README.md
-```
-
-## Dependencies
-
-- **jQuery**
-- **jQuery UI Sortable**
-- **Elementor Editor**
-
-Ensure these are properly enqueued by Elementor during development.
-
-## Preview
-
-The control appears as a sortable list with checkboxes in Elementor's custom controls. Users can easily reorder items and toggle their checkbox states.
+- **WordPress** 5.6 or higher  
+  _(Tested up to 6.4)_
+- **Elementor** 3.5 or higher  
+  _(Core plugin required)_
+- **PHP** 7.4 or higher  
+  _(Recommended: 8.0+)_
