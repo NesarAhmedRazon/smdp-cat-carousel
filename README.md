@@ -90,7 +90,3 @@ Ensure these are properly enqueued by Elementor during development.
 ## Preview
 
 The control appears as a sortable list with checkboxes in Elementor's custom controls. Users can easily reorder items and toggle their checkbox states.
-
----
-
-Let me know if you'd like further refinements!
