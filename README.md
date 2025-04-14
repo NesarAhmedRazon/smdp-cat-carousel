@@ -4,7 +4,7 @@ Here’s a complete `README.md` file for your Elementor custom control. It inclu
 
 # Sortable Checkbox Elementor Control
 
-![Preview](assets/images/preview/1.jpg)
+![Preview](assets/images/preview/1.JPG)
 
 ## Description
 
