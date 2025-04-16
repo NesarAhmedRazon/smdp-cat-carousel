@@ -3,7 +3,7 @@
  * Plugin Name: SMDPicker Category Carousel
  * Plugin URI: https://github.com/NesarAhmedRazon/smdp-cat-carousel
  * Description: An Elementor widget to display a sliding carousel of WooCommerce product categories.
- * Version: 0.0.1
+ * Version: 2.0.1
  * Author: Nesar Ahmed
  * Author URI: https://nesarahmed.dev/
  * License: GPL-2.0-or-later
@@ -41,13 +41,15 @@ require_once( SMDP_CAT_CAR_PLUGIN_DIR . '/inc/extra.php' );
 function SMDP_CAT_CAR_carousel_dependencies() {
     
     wp_register_style( 'smdp-cat-carousel', SMDP_CAT_CAR_PLUGIN_URL.'assets/css/smdp-cat-carousel.css', [], time() );
-    wp_register_script( 'smdp-cat-carousel', SMDP_CAT_CAR_PLUGIN_URL.'assets/js/smdp-cat-carousel.js', [ 'jquery','elementor-frontend'  ], time(), true );
+    wp_register_script( 'smdp-cat-carousel', SMDP_CAT_CAR_PLUGIN_URL.'assets/js/smdp-cat-carousel.js', [ 'jquery'], time(), true );
 
-    wp_enqueue_style( 'smdp-cat-carousel');
-    wp_enqueue_script( 'smdp-cat-carousel');
+    
+        wp_enqueue_style('smdp-cat-carousel');
+        wp_enqueue_script('smdp-cat-carousel');
+        
 }
 //add_action('wp_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies');
-add_action('elementor/frontend/after_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies');
+add_action('elementor/frontend/after_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies',15);
 add_action('elementor/editor/after_enqueue_scripts', 'SMDP_CAT_CAR_carousel_dependencies');
 
 
@@ -60,14 +62,10 @@ function register_carCar_control( $controls_manager ) {
 }
 add_action( 'elementor/controls/register', 'register_carCar_control' );
 
-function register_carCar_Widget( $widgets_manager ) {
-    require_once( __DIR__ . '/widgets/template.php' );
-	require_once( __DIR__ . '/widgets/catCar-widget.php' );
-    
+// Register the Widget
+function register_carCar_Widget( $widgets_manager ) {  
+    require_once( __DIR__ . '/widgets/carCar_Widget.php' );    
     require_once( __DIR__ . '/inc/device-check.php' );
-
-	$widgets_manager->register( new \SmdP_carCar_Widget() );
-
+    $widgets_manager->register( new \carCar_Widget() );
 }
 add_action( 'elementor/widgets/register', 'register_carCar_Widget' );
-
