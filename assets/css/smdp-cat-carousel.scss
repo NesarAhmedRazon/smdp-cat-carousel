@@ -105,3 +105,61 @@ $wrap: 'smdp-category-scroll';
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.smdp {
+    &-select2 {
+        min-height: 4em;
+
+        & li {
+
+
+            & span {
+                &.parent {
+                    font-weight: 600;
+                }
+
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap:0.1em;
+
+                & .icon {
+                    width: auto;
+                    height: 1.2em;
+                }
+            }
+        }
+
+        &-selection {
+            & .cont {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 0.1em;
+
+                & .icon {
+                    width: auto;
+                    height: 1.2em;
+                }
+            }
+
+
+        }
+
+        & option {
+
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: 16px;
+
+
+
+
+
+            &[data-icon] {
+
+                background-image: url(attr(data-icon));
+            }
+        }
+    }
+}

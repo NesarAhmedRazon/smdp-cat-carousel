@@ -78,9 +78,10 @@
     // Elementor editor integration
     if (window.elementor?.on) {
       elementor.on("preview:loaded", initLazyBg);
+
       if (elementor.channels?.editor) {
         elementor.channels.editor.on("change", () =>
-          setTimeout(initLazyBg, 300)
+          setTimeout(initLazyBg, 100)
         );
       }
     }

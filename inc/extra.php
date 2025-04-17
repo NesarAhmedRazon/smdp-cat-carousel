@@ -2,6 +2,8 @@
 
 !defined('ABSPATH') && exit; // Exit if accessed directly
 
+require_once( SMDP_CAT_CAR_PLUGIN_DIR . '/widgets/helper.php' );
+
 if (!function_exists('enTobnNumber')) {
     function enTobnNumber($number) {
         return strtr((string)$number, ['0'=>'০', '1'=>'১', '2'=>'২', '3'=>'৩', '4'=>'৪', '5'=>'৫', '6'=>'৬', '7'=>'৭', '8'=>'৮', '9'=>'৯']);
@@ -65,3 +67,21 @@ function get_product_category($id) {
         }
         return '';
 }
+
+
+
+function smdp_register_category_hierarchy_api() {
+    register_rest_route('smdp/v1', '/categories', [
+        'methods'  => 'GET',
+        'callback' => 'smdp_get_category_hierarchy',
+        'permission_callback' => '__return_true', // Adjust as needed for security
+    ]);
+}
+add_action('rest_api_init', 'smdp_register_category_hierarchy_api');
+
+function smdp_get_category_hierarchy() {
+    $categories = SMDP_Category_Helper::get_hierarchical_categoriess();
+
+    return new WP_REST_Response(array_values($categories), 200);
+}
+

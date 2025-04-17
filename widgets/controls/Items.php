@@ -3,6 +3,7 @@
 !defined('ABSPATH') && exit; // Exit if accessed directly
 
 class Items {
+
     public static function get_product_categories() {
         $args = array(
             'taxonomy'   => 'product_cat',
@@ -50,6 +51,7 @@ class Items {
         );
 
         $repeater = new \Elementor\Repeater();
+        
         $repeater->add_control(
             'item_title',  // Changed to more standard name
             [
@@ -82,7 +84,22 @@ class Items {
                 'frontend_available' => true,
             ]
         ); 
-        
+        $repeater->add_control(
+        'nested_categories',
+            [
+                'label' => esc_html__('Select a Category',  $domain),
+                'type' => 'nested_select2',
+                'nested_data' => SMDP_Category_Helper::get_hierarchical_categoriess(),
+                'select2options'=>[
+                    'placeholder'=> 'Select an option',                    
+                    'dropdownCssClass'=>'smdp-select2',
+                    'selectionCssClass'=>'smdp-select2-selection',
+                    'containerCssClass'=>'smdp-select2-selection'
+                ],
+                'label_block' => true,
+                'description' => esc_html__('Select categories with nested hierarchy',  $domain),
+            ]
+        );
         $repeater->add_responsive_control(
             'item_icon',  // Changed to more standard name
             [

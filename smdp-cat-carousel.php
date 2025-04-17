@@ -55,9 +55,9 @@ add_action('elementor/editor/after_enqueue_scripts', 'SMDP_CAT_CAR_carousel_depe
 
 function register_carCar_control( $controls_manager ) {
 
-	require_once( __DIR__ . '/controls/carCar.php' );
+	require_once( __DIR__ . '/controls/nested_select2.php' );
 
-    $controls_manager->register( new \SmdP_carCar_Control() );
+    $controls_manager->register( new \Nested_Select2_Control() );
 
 }
 add_action( 'elementor/controls/register', 'register_carCar_control' );

@@ -38,7 +38,33 @@ class SMDP_Category_Helper {
         
         return $options;
     }
+    public static function get_hierarchical_categoriess($parent = 0) {
+    $args = [
+        'taxonomy'   => 'product_cat',
+        'hide_empty' => false,
+        'parent'     => $parent,
+        'orderby'    => 'name',
+        'order'      => 'ASC'
+    ];
     
+    $categories = get_terms($args);
+    $hierarchy = [];
+
+    if (!empty($categories) && !is_wp_error($categories)) {
+        foreach ($categories as $category) {
+            $hierarchy[$category->term_id] = [
+                'id'       => $category->term_id,
+                'name'     => $category->name,
+                'icon'     => wp_get_attachment_url(get_term_meta($category->term_id, 'thumbnail_id', true)),
+                'children' => self::get_hierarchical_categoriess($category->term_id) // Recursively fetch children
+            ];
+        }
+    }
+    
+    return array_values($hierarchy); // Ensure numeric index for JSON output
+}
+
+
     /**
      * Get complete category data
      * 
