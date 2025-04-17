@@ -55,9 +55,9 @@ class Items {
             [
                 'label' => esc_html__('Name', $domain),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => esc_html__('', $domain),
+                'default' => esc_html__('Category', $domain),
                 'placeholder' => esc_html__('Category Title', $domain),
-                'frontend_available' => true,
+                
             ]
         ); 
         $repeater->add_control(
@@ -68,7 +68,7 @@ class Items {
                 'label_on' => esc_html__('Yes', $domain),
                 'label_off' => esc_html__('No', $domain),
                 'return_value' => 'yes',
-                'default' => 'no',
+                'default' => 'yes',
             ]
         );
         $repeater->add_control(

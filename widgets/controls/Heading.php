@@ -78,6 +78,18 @@ $obj->start_controls_section(
 			[
 				'name' => $secId.'_typography',
 				'selector' => '{{WRAPPER}} '.$selector,
+                'fields_options' => [
+                    'font_size' => [
+                        'default' => [
+                            'unit' => 'rem',
+                            'size' => 1.2
+                        ],
+                        'size_units' => ['px', 'em', 'rem',],
+                    ],
+                    'font_weight' => [
+                        'default' => '600',
+                    ],
+                ],
 			]
 		);
         
