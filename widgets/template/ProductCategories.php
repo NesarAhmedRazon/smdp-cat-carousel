@@ -2,10 +2,23 @@
 !defined('ABSPATH') && exit; // Exit if accessed directly
 
 class ProductCategories {
+    public static function dummyhtml($settings,$id,$rawSettings=[],$domain='smdp-cat-carousel'){
+        if( !is_array($settings)) {
+            return;
+        }
+        //var_dump($settings);
+        ?>
+            <section>hello</section>
+        <?php
+    }
     public static function html($settings,$id,$rawSettings=[],$domain='smdp-cat-carousel'){
         if( !is_array($settings)) {
             return;
         }
+
+        // ------------ General settings
+        $gid = $id.'_general';
+    
         $hid = $id.'_heading';
         $deviceType = getDeviceType();
         $headingVisible = $settings[$hid.'_visibility'] === 'yes' ? true : false;
@@ -13,15 +26,17 @@ class ProductCategories {
 
         //-----------------
         $cid =  $id.'_items';
-        $categories = $settings[$cid.'_categories'];
-        $showIcon = $settings[$cid.'_show_icon'] === 'yes' ? true : false;
+        
+        $catItem = $gid.'_hiararcy' == 'all' ? $cid.'_categories' : $cid.'_categories2' ;
+        $categories = isset($settings[$catItem]) ? $settings[$catItem] : [];
+        $showIcon = isset($settings[$cid.'_show_icon']) === 'yes' ? true : false;
         $postFix = $deviceType == 'desktop' ? $cid.'_show_icon' : $cid.'_show_icon_'.$deviceType;
 
         // --------- Counter info
         $xid =  $id.'_counter';
-        $showCounter = $settings[$xid.'_visibility'] === 'yes' ? true : false;
-        $ln = $settings[$xid.'_language'];
-
+        $showCounter = isset($settings[$xid.'_visibility']) === 'yes' ? true : false;
+        $ln = isset($settings[$xid.'_language'])?$settings[$xid.'_language']:'en';
+        var_dump($categories);
         ?>
             <section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" >
                 <?php if($headingVisible):?>  

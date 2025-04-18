@@ -12,15 +12,20 @@ class SMDP_Category_Helper {
      * @param int $level Nesting level
      * @return array
      */
-public static function get_hierarchical_categories($parent = 0, $level = 0) {
+public static function get_hierarchical_categories($heirar='all',$parent = 0, $level = 0) {
     $args = [
         'taxonomy'   => 'product_cat',
         'hide_empty' => false,
-        'parent'     => $parent,
         'orderby'    => 'name',
         'order'      => 'ASC'
     ];
-    
+
+    if ($heirar === 'parent_only') {
+        $args['parent'] = 0; // Fetch only top-level categories
+    }else{
+        $args['parent'] = $parent;
+    }
+
     $categories = get_terms($args);
     $hierarchy = [];
 
@@ -32,24 +37,30 @@ public static function get_hierarchical_categories($parent = 0, $level = 0) {
                 'icon'   => wp_get_attachment_url(get_term_meta($category->term_id, 'thumbnail_id', true)),
                 'level'  => $level // Track depth level
             ];
-
+            if ($heirar !== 'parent_only') {
             // Recursively fetch children with incremented level
-            $hierarchy = array_merge($hierarchy, self::get_hierarchical_categories($category->term_id, $level + 1));
+            $hierarchy = array_merge($hierarchy, self::get_hierarchical_categories($heirar,$category->term_id, $level + 1));
+            }
         }
     }
 
     return $hierarchy;
 }
 
-    public static function get_hierarchical_categoriess($parent = 0) {
+    public static function get_hierarchical_categoriess($heirar='all',$parent = 0) {
     $args = [
         'taxonomy'   => 'product_cat',
         'hide_empty' => false,
-        'parent'     => $parent,
         'orderby'    => 'name',
         'order'      => 'ASC'
     ];
     
+    if ($heirar === 'only_parent') {
+        $args['parent'] = 0; // Fetch only top-level categories
+    }else{
+        $args['parent'] = $parent;
+    }
+
     $categories = get_terms($args);
     $hierarchy = [];
 
@@ -59,7 +70,7 @@ public static function get_hierarchical_categories($parent = 0, $level = 0) {
                 'id'       => $category->term_id,
                 'name'     => $category->name,
                 'icon'     => wp_get_attachment_url(get_term_meta($category->term_id, 'thumbnail_id', true)),
-                'children' => self::get_hierarchical_categoriess($category->term_id) // Recursively fetch children
+                'children' => self::get_hierarchical_categoriess($heirar,$category->term_id) // Recursively fetch children
             ];
         }
     }
@@ -113,3 +124,4 @@ public static function get_hierarchical_categories($parent = 0, $level = 0) {
         return $grouped;
     }
 }
+

@@ -19,16 +19,9 @@ class Items {
         return $options;
         
     }
-    public static function get_product_category_name($id){
-        $cat = get_product_category($id);
-        var_dump($id);
-        var_dump($cat);
-        if($cat){
-            return $cat['name'];
-        }
-        return $id;
-    }
+    
     public static function controls($obj, $label, $secId, $selector='.smdp-category-scroll-content', $domain='smdp-cat-carousel') {
+        
         $obj->start_controls_section(
             $secId.'_item_section',
             [
@@ -47,68 +40,65 @@ class Items {
                 'return_value' => 'yes',
                 'default' => 'yes',
                 'frontend_available' => true,
+                
             ]
         );
 
-        $repeater = new \Elementor\Repeater();
+        // $repeater = new \Elementor\Repeater();
+        // $repeater = new \Elementor\Repeater();
         
-        $repeater->add_control(
-            'item_title',  // Changed to more standard name
-            [
-                'label' => esc_html__('Name', $domain),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => esc_html__('Category', $domain),
-                'placeholder' => esc_html__('Category Title', $domain),
+        // $repeater->add_control(
+        //     'item_title',  // Changed to more standard name
+        //     [
+        //         'label' => esc_html__('Name', $domain),
+        //         'type' => \Elementor\Controls_Manager::TEXT,
+        //         'default' => esc_html__('Category', $domain),
+        //         'placeholder' => esc_html__('Category Title', $domain),
                 
-            ]
-        ); 
-        $repeater->add_control(
-            'enable_custome_title',
-            [
-                'label' => esc_html__('Custom Title', $domain),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Yes', $domain),
-                'label_off' => esc_html__('No', $domain),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-        $repeater->add_control(
-            'item_id',  // Changed to more standard name
-            [
-                'label' => esc_html__('Select Category', $domain),
-                'type' => \Elementor\Controls_Manager::SELECT2,
-                'options' => self::get_product_categories(),
-                'label_block' => true,
-                'default' => '',
-                'frontend_available' => true,
-            ]
-        ); 
-        $repeater->add_control(
-        'nested_categories',
-            [
-                'label' => esc_html__('Select a Category',  $domain),
-                'type' => 'nested_select2',
-                'nested_data' => SMDP_Category_Helper::get_hierarchical_categories(),
-                'select2options'=>[
-                    'placeholder'=> 'Select an option',                    
-                    'dropdownCssClass'=>'smdp-select2',
-                    'selectionCssClass'=>'smdp-select2-selection',
-                    'containerCssClass'=>'smdp-select2-selection'
-                ],
-                'label_block' => true,
-                'description' => esc_html__('Select categories with nested hierarchy',  $domain),
-            ]
-        );
-        $repeater->add_responsive_control(
-            'item_icon',  // Changed to more standard name
-            [
-                'label' => esc_html__('Custom Icon', $domain),
-                'type' => \Elementor\Controls_Manager::MEDIA,
-                'label_block' => false,
+        //     ]
+        // ); 
+        // $repeater->add_control(
+        //     'enable_custome_title',
+        //     [
+        //         'label' => esc_html__('Custom Title', $domain),
+        //         'type' => \Elementor\Controls_Manager::SWITCHER,
+        //         'label_on' => esc_html__('Yes', $domain),
+        //         'label_off' => esc_html__('No', $domain),
+        //         'return_value' => 'yes',
+        //         'default' => 'yes',
+        //     ]
+        // );
+        
+        
+        // $repeater->add_control(
+        // 'nested_categories',
+        //     [
+        //         'label' => esc_html__('Select a Category',  $domain),
+        //         'type' => 'nested_select2',
+        //         'nested_data' => SMDP_Category_Helper::get_hierarchical_categories('parent_only'),
+        //         'select2options'=>[
+        //             'placeholder'=> 'Select an option',                    
+        //             'dropdownCssClass'=>'smdp-select2',
+        //             'selectionCssClass'=>'smdp-select2-selection',
+        //             'containerCssClass'=>'smdp-select2-selection'
+        //         ],                
+        //         'label_block' => true,
+        //         'description' => esc_html__('Select categories with nested hierarchy',  $domain),
                 
-            ]
-        );      
+        //     ]
+        // );
+        
+        // $repeater->add_responsive_control(
+        //     'item_icon',  // Changed to more standard name
+        //     [
+        //         'label' => esc_html__('Custom Icon', $domain),
+        //         'type' => \Elementor\Controls_Manager::MEDIA,
+        //         'label_block' => false,
+                
+        //     ]
+        // );   
+        $repeater = self::get_standard_repeater($domain);  
+        $repeater2 = self::get_standard_repeater($domain,'parent_only'); 
         $obj->add_control(
             $secId.'_categories',  // Fixed typo (was _categoriez)
             [
@@ -116,9 +106,38 @@ class Items {
                 'type' => \Elementor\Controls_Manager::REPEATER,
                 'fields' => $repeater->get_controls(),                
                 'title_field' => '{{{ item_title || "Category #" + item_id }}}',
-
+                'conditions' => [
+                    'terms' => [
+                        [
+                            'name' => 'smdp_pc_general_hiararcy',
+                            'operator' => '===',
+                            'value' => 'all',
+                        ],
+                    ],
+                ],
             ]
-            );
+        );      
+        $obj->add_control(
+            $secId.'_categories2',  // Fixed typo (was _categoriez)
+            [
+                'label' => esc_html__('Categories2', $domain),
+                'type' => \Elementor\Controls_Manager::REPEATER,
+                'fields' => $repeater2->get_controls(),                
+                'title_field' => '{{{ item_title || "Category #" + item_id }}}',
+                'default' => [
+                    'item_title'=>esc_html__( 'Title #1', $domain ),
+                ],
+                'conditions' => [
+                    'terms' => [
+                        [
+                            'name' => 'smdp_pc_general_hiararcy',
+                            'operator' => '===',
+                            'value' => 'parent_only',
+                        ],
+                    ],
+                ],
+            ]
+        );
         $obj->end_controls_section();
 
         // --------------------------------------------------------------------------------------
@@ -137,47 +156,7 @@ class Items {
 				'selector' => '{{WRAPPER}} '.$selector,
 			]
 		);
-        $obj->add_responsive_control(
-            $secId.'_style_align',
-                    
-            [
-                'label' => esc_html__( 'Item Align', $domain ),
-                'type' => \Elementor\Controls_Manager::CHOOSE,
-                'options' => [
-                    'flex-start' => [
-                        'title' => esc_html__( 'Left', $domain),
-                        'icon' => 'eicon-align-start-h',
-                    ],
-                    'center' => [
-                        'title' => esc_html__( 'Center', $domain),
-                        'icon' => 'eicon-justify-center-h',
-                    ],
-                    'flex-end' => [
-                        'title' => esc_html__( 'Right', $domain),
-                        'icon' => 'eicon-align-end-h',
-                    ],
-                    'space-between' => [
-                        'title' => esc_html__( 'Space Between', $domain),
-                        'icon' => 'eicon-justify-space-between-h',
-                    ],
-                    'space-around' => [
-                        'title' => esc_html__( 'Space Around', $domain),
-                        'icon' => 'eicon-justify-space-around-h',
-                    ],
-                    'space-evenly' => [
-                        'title' => esc_html__( 'Space Evenly', $domain),
-                        'icon' => 'eicon-justify-space-evenly-h',
-                    ],
-                ],
-                'devices' => [ 'desktop', 'tablet' ],
-                'default' => 'center',
-                'label_block' => true,
-                'toggle' => true,
-                'selectors' => [
-                    '{{WRAPPER}} .smdp-category-scroll-container' => 'justify-content: {{VALUE}};',
-                ],
-			]
-		);
+        
         $obj->add_responsive_control(
             $secId.'_style_gap',
             [
@@ -234,4 +213,63 @@ class Items {
         
         $obj->end_controls_section();
     }
+    public static function get_standard_repeater($domain,$type='all') {
+    $repeater = new \Elementor\Repeater();
+
+    // Item Title Control
+    $repeater->add_control(
+        'item_title',
+        [
+            'label' => esc_html__('Name', $domain),
+            'type' => \Elementor\Controls_Manager::TEXT,
+            'default' => esc_html__('Category', $domain),
+            'placeholder' => esc_html__('Category Title', $domain),
+        ]
+    );
+
+    // Custom Title Switcher
+    $repeater->add_control(
+        'enable_custom_title',
+        [
+            'label' => esc_html__('Custom Title', $domain),
+            'type' => \Elementor\Controls_Manager::SWITCHER,
+            'label_on' => esc_html__('Yes', $domain),
+            'label_off' => esc_html__('No', $domain),
+            'return_value' => 'yes',
+            'default' => 'yes',
+        ]
+    );
+
+    // Nested Categories Control
+    $repeater->add_control(
+        'nested_categories',
+        [
+            'label' => esc_html__('Select a Category', $domain),
+            'type' => 'nested_select2',
+            'nested_data' => SMDP_Category_Helper::get_hierarchical_categories($type),
+            'select2options' => [
+                'placeholder' => 'Select an option',
+                'dropdownCssClass' => 'smdp-select2',
+                'selectionCssClass' => 'smdp-select2-selection',
+                'containerCssClass' => 'smdp-select2-selection'
+            ],
+            'label_block' => true,
+            'description' => esc_html__('Select categories with nested hierarchy', $domain),
+        ]
+    );
+
+    // Item Icon Control
+    $repeater->add_responsive_control(
+        'item_icon',
+        [
+            'label' => esc_html__('Custom Icon', $domain),
+            'type' => \Elementor\Controls_Manager::MEDIA,
+            'label_block' => false,
+        ]
+    );
+
+    return $repeater;
 }
+
+}
+

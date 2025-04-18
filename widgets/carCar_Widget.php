@@ -5,7 +5,7 @@ require_once( __DIR__ . '/template/index.php' );
 
 
 class carCar_Widget extends \Elementor\Widget_Base {
-    private $id = 'smdp_pc_'; // widget id prefix
+    private $id = 'smdp_pc'; // widget id prefix
     public function get_name(): string {
 		return 'smdp_product_catategories';
 	}
@@ -28,6 +28,7 @@ class carCar_Widget extends \Elementor\Widget_Base {
        return [ 'elementor-frontend','smdp-cat-carousel' ];
     }
     protected function register_controls(): void {
+        Controls::general($this,'General',$this->id.'_general','.smdp-category-general');
         Controls::heading($this,'Heading',$this->id.'_heading','.smdp-category-scroll-title');
         Controls::items($this,'Items',$this->id.'_items','.smdp-category-content');
         Controls::counter($this,'Counter',$this->id.'_counter','.smdp-category-counter');
@@ -37,6 +38,7 @@ class carCar_Widget extends \Elementor\Widget_Base {
         $settings = $this->get_settings_for_display();
         $rawSettings = $this->get_settings();
         $id = $this->id;
-        Templates::posdCat($settings,$id,$rawSettings);
+         Templates::posdCat($settings,$id,$rawSettings);
+        //Templates::dummyhtml($settings,$id,$rawSettings);
     }
 }
