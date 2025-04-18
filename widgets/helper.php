@@ -12,32 +12,35 @@ class SMDP_Category_Helper {
      * @param int $level Nesting level
      * @return array
      */
-    public static function get_hierarchical_categories($parent = 0, $level = 0) {
-        $args = [
-            'taxonomy'   => 'product_cat',
-            'hide_empty' => false,
-            'parent'     => $parent,
-            'orderby'    => 'name',
-            'order'      => 'ASC'
-        ];
-        
-        $categories = get_terms($args);
-        $options = [];
-        
-        if (!empty($categories) && !is_wp_error($categories)) {
-            foreach ($categories as $category) {
-                // Add indentation to show hierarchy
-                $prefix = str_repeat('— ', $level);
-                $options[$category->term_id] = $prefix . $category->name;
-                
-                // Get children recursively
-                $children = self::get_hierarchical_categories($category->term_id, $level + 1);
-                $options = $options + $children;
-            }
+public static function get_hierarchical_categories($parent = 0, $level = 0) {
+    $args = [
+        'taxonomy'   => 'product_cat',
+        'hide_empty' => false,
+        'parent'     => $parent,
+        'orderby'    => 'name',
+        'order'      => 'ASC'
+    ];
+    
+    $categories = get_terms($args);
+    $hierarchy = [];
+
+    if (!empty($categories) && !is_wp_error($categories)) {
+        foreach ($categories as $category) {
+            $hierarchy[] = [
+                'id'     => $category->term_id,
+                'name'   => $category->name,
+                'icon'   => wp_get_attachment_url(get_term_meta($category->term_id, 'thumbnail_id', true)),
+                'level'  => $level // Track depth level
+            ];
+
+            // Recursively fetch children with incremented level
+            $hierarchy = array_merge($hierarchy, self::get_hierarchical_categories($category->term_id, $level + 1));
         }
-        
-        return $options;
     }
+
+    return $hierarchy;
+}
+
     public static function get_hierarchical_categoriess($parent = 0) {
     $args = [
         'taxonomy'   => 'product_cat',

@@ -89,7 +89,7 @@ class Items {
             [
                 'label' => esc_html__('Select a Category',  $domain),
                 'type' => 'nested_select2',
-                'nested_data' => SMDP_Category_Helper::get_hierarchical_categoriess(),
+                'nested_data' => SMDP_Category_Helper::get_hierarchical_categories(),
                 'select2options'=>[
                     'placeholder'=> 'Select an option',                    
                     'dropdownCssClass'=>'smdp-select2',
@@ -103,7 +103,7 @@ class Items {
         $repeater->add_responsive_control(
             'item_icon',  // Changed to more standard name
             [
-                'label' => esc_html__('Icon', $domain),
+                'label' => esc_html__('Custom Icon', $domain),
                 'type' => \Elementor\Controls_Manager::MEDIA,
                 'label_block' => false,
                 

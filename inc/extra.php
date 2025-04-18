@@ -80,7 +80,7 @@ function smdp_register_category_hierarchy_api() {
 add_action('rest_api_init', 'smdp_register_category_hierarchy_api');
 
 function smdp_get_category_hierarchy() {
-    $categories = SMDP_Category_Helper::get_hierarchical_categoriess();
+    $categories = SMDP_Category_Helper::get_hierarchical_categories();
 
     return new WP_REST_Response(array_values($categories), 200);
 }

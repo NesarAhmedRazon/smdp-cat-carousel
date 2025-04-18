@@ -37,8 +37,10 @@ class Nested_Select2_Control extends \Elementor\Control_Select2 {
                     templateResult: function(option) {
                         if (!option.id) return option.text;
                         const iconSrc = option.element.getAttribute("data-icon");
-                        const styles = option.element.getAttribute("style");                       
-                        const icon = iconSrc!=='false' ? `<img class="icon" src="${iconSrc}">` : '';
+                        const level = option.element.getAttribute("data-level");
+                        const styles = option.element.getAttribute("style");       
+                        console.log(typeof level);
+                        const icon = iconSrc!=='false' ? `<img class="icon" src="${iconSrc}">` : (level !== '0' ? '└─ ':'');
                         const cls = option.element.className ? ` class="${option.element.className}"` : '';
                         const styl = styles ? ` style="${styles}"`:``;
                         
@@ -57,23 +59,23 @@ class Nested_Select2_Control extends \Elementor\Control_Select2 {
                   selectElement.select2(select2Settings);
                 }
             });
-                function renderCategory(item, prefix = 0) {
+                function renderCategory(item, level = 0) {
                     if (!item) return;
                     <!-- console.log(item); -->
                     let padding = '', classes = '';
-                    if (prefix !== 0) {
-                        padding = ' style="padding-left:' + prefix + 'em;"';
-                    } else {
-                        classes = ' class="parent"';
-                    }
+                    level = item.level ? item.level : level;
+                    padding = level !== 0 ? ' style="padding-left:' + level + 'em;"':'';
+                    classes = level == 0 ? ' class="parent"':'';
 
-                    const optionHTML = `<option${padding}${classes} value="${item.id}" data-icon="${item.icon}">${item.name}</option>`;
+                    
+
+                    const optionHTML = `<option${padding}${classes} value="${item.id}" data-icon="${item.icon}" data-level="${level}">${item.name}</option>`;
                     print(optionHTML);
                     // Recursively process children
                     if (!_.isEmpty(item.children)) {
                         _.each(item.children, function(child, index, list) {
-                            let newPrefix = prefix + 1;
-                            renderCategory(child, newPrefix);
+                            let newLevel = level + 1;
+                            renderCategory(child, newLevel);
                         });
                     }
                 }
@@ -100,7 +102,7 @@ class Nested_Select2_Control extends \Elementor\Control_Select2 {
 							var selected = ( -1 !== value.indexOf( option.id.toString() ) ) ? 'selected' : '';
 						}
                         
-                        renderCategory(option);
+                        renderCategory(option,option.level);
 						 } 
                         );
                      #>
