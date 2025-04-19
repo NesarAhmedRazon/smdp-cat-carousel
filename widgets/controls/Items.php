@@ -31,19 +31,7 @@ class Items {
             ]
         );
 
-        $obj->add_responsive_control(
-            $secId.'_show_icon',
-            [
-                'label' => esc_html__('Show Icon', $domain),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', $domain),
-                'label_off' => esc_html__('Hide', $domain),
-                'return_value' => 'yes',
-                'default' => 'yes',
-                'frontend_available' => true,
-                
-            ]
-        );
+        
   
         $repeater = self::get_standard_repeater($domain);  
         $repeater2 = self::get_standard_repeater($domain,'parent_only'); 
