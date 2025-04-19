@@ -4,18 +4,19 @@
 
 class Items {
 
-    public static function get_product_categories() {
-        $args = array(
-            'taxonomy'   => 'product_cat',
-            'hide_empty' => false,
-        );
-        $categories = get_terms( $args );
-        $options = [];
-        if ( ! empty( $categories ) && ! is_wp_error( $categories ) ) {
-            foreach ( $categories as $category ) {
-                $options[ $category->term_id ] = $category->name;
-            }
-        }
+    public static function get_default_categories($type='all') {
+        $categories = SMDP_Category_Helper::get_hierarchical_categories($type);
+        
+        $options = array_map(function ($item) {
+                    return [
+                        'item_title' => $item['name'],
+                        'nested_categories' => $item['id'],
+                        'item_icon'=>[
+                            'url'=>$item['icon'],
+                        ]
+                    ];
+                }, $categories);
+        
         return $options;
         
     }
@@ -43,60 +44,7 @@ class Items {
                 
             ]
         );
-
-        // $repeater = new \Elementor\Repeater();
-        // $repeater = new \Elementor\Repeater();
-        
-        // $repeater->add_control(
-        //     'item_title',  // Changed to more standard name
-        //     [
-        //         'label' => esc_html__('Name', $domain),
-        //         'type' => \Elementor\Controls_Manager::TEXT,
-        //         'default' => esc_html__('Category', $domain),
-        //         'placeholder' => esc_html__('Category Title', $domain),
-                
-        //     ]
-        // ); 
-        // $repeater->add_control(
-        //     'enable_custome_title',
-        //     [
-        //         'label' => esc_html__('Custom Title', $domain),
-        //         'type' => \Elementor\Controls_Manager::SWITCHER,
-        //         'label_on' => esc_html__('Yes', $domain),
-        //         'label_off' => esc_html__('No', $domain),
-        //         'return_value' => 'yes',
-        //         'default' => 'yes',
-        //     ]
-        // );
-        
-        
-        // $repeater->add_control(
-        // 'nested_categories',
-        //     [
-        //         'label' => esc_html__('Select a Category',  $domain),
-        //         'type' => 'nested_select2',
-        //         'nested_data' => SMDP_Category_Helper::get_hierarchical_categories('parent_only'),
-        //         'select2options'=>[
-        //             'placeholder'=> 'Select an option',                    
-        //             'dropdownCssClass'=>'smdp-select2',
-        //             'selectionCssClass'=>'smdp-select2-selection',
-        //             'containerCssClass'=>'smdp-select2-selection'
-        //         ],                
-        //         'label_block' => true,
-        //         'description' => esc_html__('Select categories with nested hierarchy',  $domain),
-                
-        //     ]
-        // );
-        
-        // $repeater->add_responsive_control(
-        //     'item_icon',  // Changed to more standard name
-        //     [
-        //         'label' => esc_html__('Custom Icon', $domain),
-        //         'type' => \Elementor\Controls_Manager::MEDIA,
-        //         'label_block' => false,
-                
-        //     ]
-        // );   
+  
         $repeater = self::get_standard_repeater($domain);  
         $repeater2 = self::get_standard_repeater($domain,'parent_only'); 
         $obj->add_control(
@@ -124,9 +72,7 @@ class Items {
                 'type' => \Elementor\Controls_Manager::REPEATER,
                 'fields' => $repeater2->get_controls(),                
                 'title_field' => '{{{ item_title || "Category #" + item_id }}}',
-                'default' => [
-                    'item_title'=>esc_html__( 'Title #1', $domain ),
-                ],
+                'default' => self::get_default_categories('parent_only'),
                 'conditions' => [
                     'terms' => [
                         [

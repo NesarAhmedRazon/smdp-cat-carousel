@@ -18,7 +18,7 @@ class General {
 			$secId.'_hiararcy',
             // convert to bangla number
 			[
-				'label' => esc_html__( 'Category Hierarchy '.$secId.'_hiararcy', $domain ),
+				'label' => esc_html__( 'Category Hierarchy', $domain ),
 				'type' => \Elementor\Controls_Manager::CHOOSE,
 				'options' => [
 					'parent_only' => [
@@ -78,7 +78,16 @@ class General {
                 
 			]
 		);
-        
+        $obj->add_control(
+            $secId.'_heading',
+            [
+                'label' => esc_html__('Text', $domain ),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => esc_html__( 'জনপ্রিয় প্রোডাক্ট ক্যাটাগরি সমূহঃ', $domain ),
+                'label_block' => true,
+                'placeholder' => esc_html__( 'Enter your Heading', $domain ),
+            ]
+        );
         $obj->end_controls_section();
 
         // --------------------------------------------------------------------------------------

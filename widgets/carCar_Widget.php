@@ -38,7 +38,7 @@ class carCar_Widget extends \Elementor\Widget_Base {
         $settings = $this->get_settings_for_display();
         $rawSettings = $this->get_settings();
         $id = $this->id;
-         Templates::posdCat($settings,$id,$rawSettings);
-        //Templates::dummyhtml($settings,$id,$rawSettings);
+        //Templates::posdCat($settings,$id,$rawSettings);
+        Templates::dummyhtml($settings,$id,$rawSettings);
     }
 }

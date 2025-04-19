@@ -6,9 +6,26 @@ class ProductCategories {
         if( !is_array($settings)) {
             return;
         }
-        //var_dump($settings);
+        $deviceType = getDeviceType();
+        $gid = $id.'_general';
+        $heading = $settings[$gid.'_heading'];
+        $type = $settings[$gid.'_hiararcy'];
+        // ------------------------------------
+        
+        $cid =  $id.'_items';
+        $catItem = $type == 'all' ? $settings[$cid.'_categories'] : $settings[$cid.'_categories2'] ;
+
         ?>
-            <section>hello</section>
+            <section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" >
+                <?php if(!$heading==""):?>  
+                    <div class="smdp-category-scroll-title"><?= esc_html($heading); ?></div> 
+                <?php endif; ?>
+                <?php if(!empty($catItem)):?>  
+                    <div class="smdp-category-scroll-container">
+w
+                    </div>
+                <?php endif; ?>
+            </section>
         <?php
     }
     public static function html($settings,$id,$rawSettings=[],$domain='smdp-cat-carousel'){
@@ -18,6 +35,7 @@ class ProductCategories {
 
         // ------------ General settings
         $gid = $id.'_general';
+        $type = isset($settings[$gid.'_hiararcy']) ? $settings[$gid.'_hiararcy']: 'all';
     
         $hid = $id.'_heading';
         $deviceType = getDeviceType();
@@ -27,24 +45,26 @@ class ProductCategories {
         //-----------------
         $cid =  $id.'_items';
         
-        $catItem = $gid.'_hiararcy' == 'all' ? $cid.'_categories' : $cid.'_categories2' ;
-        $categories = isset($settings[$catItem]) ? $settings[$catItem] : [];
-        $showIcon = isset($settings[$cid.'_show_icon']) === 'yes' ? true : false;
+        $catItem = $type == 'all' ? $cid.'_categories' : $cid.'_categories2' ;
+        $categories = $settings[$catItem] ;
+        $showIcon = false;
+        
         $postFix = $deviceType == 'desktop' ? $cid.'_show_icon' : $cid.'_show_icon_'.$deviceType;
-
+        
         // --------- Counter info
         $xid =  $id.'_counter';
         $showCounter = isset($settings[$xid.'_visibility']) === 'yes' ? true : false;
         $ln = isset($settings[$xid.'_language'])?$settings[$xid.'_language']:'en';
-        var_dump($categories);
+        //var_dump($categories);
         ?>
             <section class="smdp-category-scroll" data-device="<?php echo esc_attr( $deviceType ); ?>" >
                 <?php if($headingVisible):?>  
                     <div class="smdp-category-scroll-title"><?= esc_html($sec_title); ?></div> 
                 <?php endif; ?>
                 <div class="smdp-category-scroll-container">
-                    <?php foreach ( $categories as $category ) : 
-                        $catID = $category['item_id'];   
+                    <?php foreach ( $categories as $category ) :
+                         
+                        $catID = $category['nested_categories'];   
                         if( empty($catID) ) {
                             continue;
                         }
