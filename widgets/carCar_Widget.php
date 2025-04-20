@@ -30,7 +30,7 @@ class carCar_Widget extends \Elementor\Widget_Base {
     protected function register_controls(): void {
         Controls::general($this,'General',$this->id.'_general','.smdp-category-general');
         Controls::heading($this,'Heading',$this->id.'_heading','.smdp-category-scroll-title');
-        Controls::items($this,'Items',$this->id.'_items','.smdp-category-content');
+        Controls::items($this,'Items',$this->id.'_items','.smdp-category-scroll-item');
         Controls::counter($this,'Counter',$this->id.'_counter','.smdp-category-counter');
     }
     protected function render(): void {

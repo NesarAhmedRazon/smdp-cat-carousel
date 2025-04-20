@@ -21,7 +21,7 @@ class Items {
         
     }
     
-    public static function controls($obj, $label, $secId, $selector='.smdp-category-scroll-content', $domain='smdp-cat-carousel') {
+    public static function controls($obj, $label, $secId, $selector='.smdp-category', $domain='smdp-cat-carousel') {
         
         $obj->start_controls_section(
             $secId.'_item_section',
@@ -90,7 +90,22 @@ class Items {
 				'selector' => '{{WRAPPER}} '.$selector,
 			]
 		);
-        
+        $obj->add_group_control(
+			\Elementor\Group_Control_Background::get_type(),
+			[
+				'name' => $secId.'_style_bg',
+				'types' => [ 'classic', 'gradient'],
+				'selector' => '{{WRAPPER}} '.$selector,
+                'fields_options'=>[
+                    'color'=>[
+                        'default'=>'#f0f0f033',
+                    ],
+                ],
+                'exclude'=>['image'],
+                'separator' => 'after',
+
+			]
+		);
         $obj->add_responsive_control(
             $secId.'_style_gap',
             [
@@ -121,7 +136,7 @@ class Items {
                     ],
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .smdp-category-scroll-item' => 'gap: {{SIZE}}{{UNIT}};',
+                    '{{WRAPPER}} '.$selector => 'gap: {{SIZE}}{{UNIT}};',
                 ],
             ]
             
@@ -133,11 +148,12 @@ class Items {
                 'separator' => 'before',
 				'selector' => '{{WRAPPER}} .smdp-category-scroll-item',
                 'label' => esc_html__( 'Carousel Shadow',  $domain ),
+
                 'default' => [
-                    'color' => 'rgba(28, 31, 35, .1)',
+                    'color' => 'rgba(0, 0, 0, .1)',
                     'position_x' => 0,
                     'position_y' => 4,
-                    'blur' => 24,
+                    'blur' => 5,
                     'spread' => 0,
                     'size' => 0,
                 ],

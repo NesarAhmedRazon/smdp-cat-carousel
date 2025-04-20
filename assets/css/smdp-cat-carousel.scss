@@ -15,7 +15,7 @@ $wrap: 'smdp-category-scroll';
         display: var(--smdp-pc-display);
         flex-wrap: var(--smdp-pc-flex-wrap);
         justify-content: var(--smdp-pc-justify-content);
-        overflow-y: auto;
+        // overflow-y: auto;
         grid-template-columns: repeat(var(--smdp-pc-cols), 1fr);
         gap: var(--smdp-pc-gap);
         row-gap: var(--smdp-pc-row-gap);
@@ -25,8 +25,10 @@ $wrap: 'smdp-category-scroll';
 
 
         @media (min-width: 768px) {
-            overflow-x: auto;
-            overflow-y: hidden;
+            &.slide {
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
         }
     }
 
@@ -40,7 +42,7 @@ $wrap: 'smdp-category-scroll';
         flex-flow: column;
         text-align: center;
         overflow: hidden;
-        background: #f0f0f033;
+
         padding: 0.5rem;
         border-radius: 3px;
         text-decoration: none;
