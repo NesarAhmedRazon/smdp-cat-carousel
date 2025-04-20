@@ -7,10 +7,25 @@ class ProductCategories {
             return;
         }
         $deviceType = getDeviceType();
+        $deviceId = $deviceType =='desktop'?'':'_'.$deviceType;
         $gid = $id.'_general';
         $heading = $settings[$gid.'_heading'];
         $type = $settings[$gid.'_hiararcy'];
-        $icon = $settings[$gid.'_icon_visibility'] == 'on' ? true : false;
+
+        $iconData = $settings[$gid.'_icon_visibility'];
+        $iconDataT = isset($settings[$gid.'_icon_visibility_tablet'])?$settings[$gid.'_icon_visibility_tablet']:false;
+        $iconDataM = isset($settings[$gid.'_icon_visibility_mobile'])?$settings[$gid.'_icon_visibility_mobile']:false;
+
+        $icon = ($iconData == 'on');
+        if ($iconDataT || $iconDataM) {
+            
+            $icon = ($deviceType == 'tablet'?($iconDataT === 'on'):($deviceType == 'mobile'?($iconDataM === 'on'):$icon));
+            
+        }
+        
+        
+        
+        
         $counter = $settings[$gid.'_counter_visibility'] == 'on' ? true : false;
         // ------------------------------------
         
@@ -36,16 +51,26 @@ class ProductCategories {
                         ?>
                         <a 
                             title="Explore <?= esc_html($title); ?> category"  
-                            class="smdp-category-scroll-item<?= $icon==true ? ' with-icon':'' ;?>" 
+                            class="smdp-category-scroll-item<?= $icon ? ' with-icon':'' ;?>" 
                             href="<?= esc_url( $data['link'] ); ?>" 
                             title= rel="noopener noreferrer">
                             <?php if($icon){
+
                                 $iconSrcD = $category['item_icon']['url'];
-                                $iconSrcT= isset($category['item_icon_tablet']) ? $category['item_icon_tablet']['url'] : ''; 
-                                $iconSrcM= isset($category['item_icon_mobile']) ? $category['item_icon_mobile']['url'] : '';
+                                
+                                if ($iconDataT || $iconDataM) {
+                                    $iconSrcT= isset($category['item_icon_tablet']) ? $category['item_icon_tablet']['url'] : '';
+                                    $iconSrcM= isset($category['item_icon_mobile']) ? $category['item_icon_mobile']['url'] : '';
+                                    $iconSrc = ($deviceType == 'tablet'?$iconSrcT:$iconSrcM);
+                                }else{
+                                    $iconSrc = $iconSrcD;
+                                }
+                                
+                                 
+                                
                                 $iconSrc = $iconSrcD ? $iconSrcD : $data['icon']; 
                                 ?>
-                            <span class="smdp-category-scroll-item-icon lazy-bg" data-bg="<?= esc_url($iconSrc);?>" data-bgt="<?= esc_url($iconSrcT);?>" data-bgm="<?= esc_url($iconSrcM);?>" role="img" aria-label="<?= esc_attr($data['alt'] ?? 'Category Icon'); ?>"></span>
+                            <span class="smdp-category-scroll-item-icon lazy-bg" data-bg="<?= esc_url($iconSrc);?>" role="img" aria-label="<?= esc_attr($data['alt'] ?? 'Category Icon'); ?>"></span>
                             
                         <?php } 
                            
@@ -135,6 +160,8 @@ class ProductCategories {
                         // Category Title
                         $title = $category['item_title'] !== '' ? $category['item_title'] : $catData['name'];
                         
+
+
                         ?>
                         <a title="Explore <?= esc_html($catData['name']); ?> category"  class="smdp-category-scroll-item<?= $showIcon==true ? ' with-icon':'' ;?>" href="<?php echo esc_url( $catData['link'] ); ?>" title= rel="noopener noreferrer">
                         <?php if($showIcon):?>
@@ -166,7 +193,7 @@ class ProductCategories {
             <?php if($deviceType =='tablet' || $deviceType =='desktop'): ?>
             <script>
                 jQuery(document).ready(function ($) {
-                $(".smdp-category-scroll-container").on("wheel", function (e) {
+                $(".smdp-category-scroll-container ").on("wheel", function (e) {
                     e.preventDefault();
                     this.scrollLeft += e.originalEvent.deltaY;
                 });

@@ -6,34 +6,32 @@ if(!defined('ABSPATH')){
 
 class Heading {
     public static function heading($obj,$label='Section Label',$secId='section_id',$selector='.smdp-category-scroll-title',$domain='smdp-cat-carousel'){
-$obj->start_controls_section(
-            $secId.'_content',
+
+        $obj->start_controls_section(
+            $secId.'_style',
             [
                 'label' => esc_html__( $label, $domain ),
-                'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+                
             ]
         );
-        
-        $obj->add_control(
-            $secId.'_text',
-            [
-                'label' => esc_html__('Text', $domain ),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => esc_html__( 'জনপ্রিয় প্রোডাক্ট ক্যাটাগরি সমূহঃ', $domain ),
-                'label_block' => true,
-                'placeholder' => esc_html__( 'Enter your Heading', $domain ),
-            ]
-        );
-        $obj->add_control(
-			$secId.'_visibility',
+        $obj->add_group_control( // Typography
+			\Elementor\Group_Control_Typography::get_type(),
 			[
-				'label' => esc_html__( $label.' Visible', $domain ),
-				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => esc_html__( 'Yes', $domain ),
-				'label_off' => esc_html__( 'No', $domain ),
-				'return_value' => 'yes',
-				'default' => 'yes',
-                'description' => esc_html__( 'Show or hide the heading.', $domain ),
+				'name' => $secId.'_typography',
+				'selector' => '{{WRAPPER}} '.$selector,
+                'fields_options' => [
+                    'font_size' => [
+                        'default' => [
+                            'unit' => 'rem',
+                            'size' => 1.2
+                        ],
+                        'size_units' => ['px', 'em', 'rem',],
+                    ],
+                    'font_weight' => [
+                        'default' => '600',
+                    ],
+                ],
 			]
 		);
         $obj->add_responsive_control(
@@ -63,36 +61,6 @@ $obj->start_controls_section(
 				],
 			]
 		);
-        $obj->end_controls_section();
-        //------------------------------------------------------------------------------------------------
-        $obj->start_controls_section(
-            $secId.'_style',
-            [
-                'label' => esc_html__( $label, $domain ),
-                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-                
-            ]
-        );
-        $obj->add_group_control( // Typography
-			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => $secId.'_typography',
-				'selector' => '{{WRAPPER}} '.$selector,
-                'fields_options' => [
-                    'font_size' => [
-                        'default' => [
-                            'unit' => 'rem',
-                            'size' => 1.2
-                        ],
-                        'size_units' => ['px', 'em', 'rem',],
-                    ],
-                    'font_weight' => [
-                        'default' => '600',
-                    ],
-                ],
-			]
-		);
-        
         
         $obj->add_responsive_control( // Margin
 			$secId.'_padding',
