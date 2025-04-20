@@ -58,7 +58,7 @@ class General {
                 'label_on' => esc_html__('On', $domain),
                 'label_off' => esc_html__('Off', $domain),
                 'return_value' => 'on',
-                'default' => 'off',
+                'default' => 'off                                                ',
                 'mobile_default' => 'off',
                 'frontend_available' => true,
                 
