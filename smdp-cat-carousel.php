@@ -69,3 +69,5 @@ function register_carCar_Widget( $widgets_manager ) {
     $widgets_manager->register( new \carCar_Widget() );
 }
 add_action( 'elementor/widgets/register', 'register_carCar_Widget' );
+
+

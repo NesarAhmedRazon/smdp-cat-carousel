@@ -7,6 +7,9 @@ class Templates {
     public static function posdCat(...$args) {
         return ProductCategories::html(...$args);
     }
+    public static function dummyhtml(...$args) {
+        return ProductCategories::dummyhtml(...$args);
+    }
 
 
 }

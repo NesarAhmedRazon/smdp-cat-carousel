@@ -5,20 +5,26 @@ $wrap: 'smdp-category-scroll';
     $container: '-container';
 
     &#{$container} {
-        display: grid;
-        flex-wrap: wrap;
+        --smdp-pc-display: grid;
+        --smdp-pc-cols: 3;
+        --smdp-pc-gap: 0.5rem;
+        --smdp-pc-row-gap: 0.5rem;
+        --smdp-pc-column-gap: 0.5rem;
+        --smdp-pc-flex-wrap: nowrap;
+        --smdp-pc-justify-content: flex-start;
+        display: var(--smdp-pc-display);
+        flex-wrap: var(--smdp-pc-flex-wrap);
+        justify-content: var(--smdp-pc-justify-content);
         overflow-y: auto;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.5rem;
+        grid-template-columns: repeat(var(--smdp-pc-cols), 1fr);
+        gap: var(--smdp-pc-gap);
+        row-gap: var(--smdp-pc-row-gap);
+        column-gap: var(--smdp-pc-column-gap);
         padding: 10px 0;
 
-        @media (min-width: 576px) {
-            grid-template-columns: repeat(4, 1fr);
-        }
+
 
         @media (min-width: 768px) {
-            display: flex;
-            flex-wrap: nowrap;
             overflow-x: auto;
             overflow-y: hidden;
         }

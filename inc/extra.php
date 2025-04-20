@@ -58,10 +58,17 @@ function get_product_category($id) {
             $data['link'] = get_term_link( $category );
             $data['image'] = get_term_meta( $category->term_id, 'thumbnail_id', true );
             $icon = get_term_meta( $category->term_id, 'category_icon', true );
-            $data['icon'] =  $icon ? $icon : 'https://smdpicker.com/wp-content/uploads/2024/06/smdpicker_logo_v3.svg';
-         
+             
+            if(is_array($icon)){
+                $iconSrc = $icon['url'];
+            }else{
+                $iconSrc = $icon;
+            }
+            
+            $data['icon'] = $iconSrc !== "" ? $iconSrc: "https://smdpicker.com/wp-content/uploads/2024/06/smdpicker_logo_v3.svg";
             $data['image'] = wp_get_attachment_url( $data['image'] );
             $data['count'] = $category->count ;
+            $data['icoDump'] = is_array($icon);
             
             return $data;
         }
@@ -80,7 +87,7 @@ function smdp_register_category_hierarchy_api() {
 add_action('rest_api_init', 'smdp_register_category_hierarchy_api');
 
 function smdp_get_category_hierarchy() {
-    $categories = SMDP_Category_Helper::get_hierarchical_categoriess();
+    $categories = SMDP_Category_Helper::get_hierarchical_categories('parent_only');
 
     return new WP_REST_Response(array_values($categories), 200);
 }

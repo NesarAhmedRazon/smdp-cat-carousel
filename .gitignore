@@ -7,3 +7,4 @@ sftp.json
 /node_modules
 /.vscode
 /app/node_modules
+/vendor
