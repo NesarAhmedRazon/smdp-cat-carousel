@@ -3,7 +3,7 @@
  * Plugin Name: SMDPicker Category Carousel
  * Plugin URI: https://github.com/NesarAhmedRazon/smdp-cat-carousel
  * Description: An Elementor widget to display a sliding carousel of WooCommerce product categories.
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Nesar Ahmed
  * Author URI: https://nesarahmed.dev/
  * License: GPL-2.0-or-later

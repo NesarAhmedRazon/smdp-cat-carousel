@@ -12,8 +12,10 @@ if (!function_exists('enTobnNumber')) {
 
 
 if (!function_exists('dumper')) {
-    function dumper($data) {
-        if ( current_user_can( 'manage_options' ) ) {        
+    function dumper($data, $title = 'Dump Data') {
+        
+        if ( current_user_can( 'manage_options' ) ) {   
+            echo $title . ': ';
             var_dump($data);
         }
     }

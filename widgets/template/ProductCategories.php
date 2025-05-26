@@ -12,18 +12,20 @@ class ProductCategories {
         $heading = $settings[$gid.'_heading'];
         $type = $settings[$gid.'_hiararcy'];
 
-        $iconData = $settings[$gid.'_icon_visibility'];
-        $iconDataT = isset($settings[$gid.'_icon_visibility_tablet'])?$settings[$gid.'_icon_visibility_tablet']:false;
-        $iconDataM = isset($settings[$gid.'_icon_visibility_mobile'])?$settings[$gid.'_icon_visibility_mobile']:false;
+        $iconData  = ($settings[$gid . '_icon_visibility'] ?? 'on') === 'on';
+        $iconDataT = ($settings[$gid . '_icon_visibility_tablet'] ?? '') === 'on';
+        $iconDataM = ($settings[$gid . '_icon_visibility_mobile'] ?? '') === 'on';
 
-        $icon = ($iconData == 'on');
-        if ($iconDataT || $iconDataM) {
-            
-            $icon = ($deviceType == 'tablet'?($iconDataT === 'on'):($deviceType == 'mobile'?($iconDataM === 'on'):$icon));
-            
+
+
+
+        $icon = $iconData;
+
+        if ($deviceType === 'tablet' && !$iconDataT) {
+            $icon = $iconDataT;
+        } elseif ($deviceType === 'mobile' && !$iconDataM) {
+            $icon = $iconDataM;
         }
-        
-        
         
         
         $counter = $settings[$gid.'_counter_visibility'] == 'on' ? true : false;
@@ -56,19 +58,28 @@ class ProductCategories {
                             title= rel="noopener noreferrer">
                             <?php if($icon){
 
-                                $iconSrcD = $category['item_icon']['url'];
-                                
-                                if ($iconDataT || $iconDataM) {
-                                    $iconSrcT= isset($category['item_icon_tablet']) ? $category['item_icon_tablet']['url'] : '';
-                                    $iconSrcM= isset($category['item_icon_mobile']) ? $category['item_icon_mobile']['url'] : '';
-                                    $iconSrc = ($deviceType == 'tablet'?$iconSrcT:$iconSrcM);
-                                }else{
-                                    $iconSrc = $iconSrcD;
-                                }
-                                
-                                 
-                                
-                                $iconSrc = $iconSrcD ? $iconSrcD : $data['icon']; 
+                                    $iconSrc = ''; // default empty
+                                        $iconSrcD = $category['item_icon']['url'] ?? '';
+                                        $iconSrcT = $category['item_icon_tablet']['url'] ?? '';
+                                        $iconSrcM = $category['item_icon_mobile']['url'] ?? '';
+
+                                        // Use device-specific icon if visibility is enabled for that device
+                                        if ($iconDataT || $iconDataM) {
+                                            if ($deviceType === 'tablet' && $iconDataT === 'on') {
+                                                $iconSrc = $iconSrcT;
+                                            } elseif ($deviceType === 'mobile' && $iconDataM === 'on') {
+                                                $iconSrc = $iconSrcM;
+                                            } else {
+                                                $iconSrc = $iconSrcD;
+                                            }
+                                        } else {
+                                            $iconSrc = $iconSrcD;
+                                        }
+
+                                        // Fallback if no icon found
+                                        if (empty($iconSrc)) {
+                                            $iconSrc = $data['icon'] ?? '';
+                                        }
                                 ?>
                             <span class="smdp-category-scroll-item-icon lazy-bg" data-bg="<?= esc_url($iconSrc);?>" role="img" aria-label="<?= esc_attr($data['alt'] ?? 'Category Icon'); ?>"></span>
                             
